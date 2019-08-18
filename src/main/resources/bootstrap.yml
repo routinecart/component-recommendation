@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: component-recommendation
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
+      retry:
+        initial-interval: 60000
+        max-interval: 60000
+        max-attempts: 5

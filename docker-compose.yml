@@ -1,0 +1,43 @@
+version: "3.7"
+services:
+  component-config-server:
+    container_name: component-config-server
+    image: atuldwivedi/component-config-server:1.0.0-SNAPSHOT
+    ports:
+      - 8888:8888
+    networks:
+      - routinecart
+
+  component-eureka-server:
+    container_name: component-eureka-server
+    image: component-eureka-server
+    ports:
+      - 8010:8010
+    networks:
+      - routinecart
+    depends_on:
+      - component-config-server
+
+  component-recommendation:
+    container_name: component-recommendation
+    image: component-recommendation
+    environment:
+      SPRING_CLOUD_CONFIG_URI: "http://component-config-server:8888"
+    ports:
+      - 15151:15151
+    networks:
+      - routinecart
+    depends_on:
+      - component-config-server
+      - component-eureka-server
+
+networks:
+  routinecart:
+    external:
+      name: routinecart
+
+volumes:
+  routinecart:
+    external:
+      name: routinecart
+#  configurations: routinecart-configurations
